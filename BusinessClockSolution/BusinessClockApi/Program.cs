@@ -38,3 +38,5 @@ app.MapGet("/status", () =>
 // this is what starts our web server. This is a blocking call. It will keep running forever.
 app.Run();
 
+// Because we aren't using a Static Void Main Method (we ARE using top-level statements)
+public partial class Program { }

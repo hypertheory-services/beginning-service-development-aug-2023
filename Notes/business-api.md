@@ -3,6 +3,11 @@
 ## Right Now
 
 We are open 9-5 Monday-Friday
+    - We open PROMPTLY at 9:00:00
+    - Up until 4:59:59
+
+We are closed at 5:00:00
+
 We are closed on the weekends.
 
 We need to let consumers of this API know if we are currently open or closed.

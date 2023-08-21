@@ -1,4 +1,6 @@
+using BusinessClockApi;
 using BusinessClockApi.Models;
+using BusinessClockApi.Services;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -7,6 +9,8 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+builder.Services.AddSingleton<BusinessClock>();
+builder.Services.AddSingleton<ISystemTime, SystemTime>();
 // Above this line is "configuring" our web application services.
 var app = builder.Build();
 // After this line is "middleware" - the stuff that receives the HTTP request and makes
@@ -19,19 +23,35 @@ if (app.Environment.IsDevelopment())
     app.UseSwaggerUI();
 }
 
-app.MapGet("/status", () =>
+app.MapGet("/status", (BusinessClock clock) =>
 {
-    var fakeResponse = new ClockResponseModel
+    ClockResponseModel response;
+    if (clock.IsOpen())
     {
-        IsOpen = true,
-        SupportContact = new SupportContactResponseModel
+        response = new ClockResponseModel
         {
-            Name = "Mitch",
-            Phone = "800 555-1212",
-            Email = "mitch@company.com"
-        }
-    };
-    return Results.Ok(fakeResponse);
+            IsOpen = true,
+            SupportContact = new SupportContactResponseModel
+            {
+                Name = "Mitch",
+                Phone = "800 555-1212",
+                Email = "mitch@company.com"
+            }
+        };
+    } else
+    {
+        response = new ClockResponseModel
+        {
+            IsOpen = false,
+            SupportContact = new SupportContactResponseModel
+            {
+                Name = "Support Pros Inc.",
+                Phone = "800 999-1213x23",
+                Email = "support@support-pros.com"
+            }
+        };
+    }
+    return Results.Ok(response);
 });
 
 

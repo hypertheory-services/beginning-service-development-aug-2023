@@ -1,6 +1,9 @@
 ﻿
 using Alba;
 using BusinessClockApi.Models;
+using BusinessClockApi.Services;
+using Microsoft.Extensions.DependencyInjection;
+using NSubstitute;
 
 namespace BusinessClockApi.ContractTests.Status;
 
@@ -9,7 +12,17 @@ public class StatusTests
     [Fact]
     public async Task WhileWeAreOpen()
     {
-        var host = await AlbaHost.For<Program>();
+        var host = await AlbaHost.For<Program>(config =>
+        {
+            var clock = Substitute.For<ISystemTime>();
+
+            clock.GetCurrent().Returns(new DateTime(2023, 8, 21, 16, 59, 00));
+
+            config.ConfigureServices(services =>
+            {
+                services.AddSingleton<ISystemTime>(clock);
+            });
+        });
 
         var expectedResponse = new ClockResponseModel
         {
@@ -41,7 +54,17 @@ public class StatusTests
     public async Task WhileWeAreClosed()
     {
 
-        var host = await AlbaHost.For<Program>();
+        var host = await AlbaHost.For<Program>(config =>
+        {
+            var clock = Substitute.For<ISystemTime>();
+
+            clock.GetCurrent().Returns(new DateTime(2023, 8, 21, 17, 00, 00));
+
+            config.ConfigureServices(services =>
+            {
+                services.AddSingleton<ISystemTime>(clock);
+            });
+        });
 
         var expectedResponse = new ClockResponseModel
         {

@@ -12,9 +12,9 @@ public class BusinessClock
         _systemTime = systemTime;
     }
 
-    public bool IsOpen()
+    public virtual bool IsOpen()
     {
-        var now = _systemTime.GetCurrent(); // Magic Global Thing.
+        var now = _systemTime.GetCurrent(); 
 
         var dayOfWeek = now.DayOfWeek;
 

@@ -34,10 +34,11 @@ public class BusinessClockTests
 
         Assert.False(isOpen);
     }
-
+    // TODO Added a Case
     [Theory]
     [InlineData("8/21/2023 9:00:00")]
     [InlineData("8/21/2023 16:59:59")]
+    [InlineData("8/21/2023 12:59:59")]
     public void WeAreOpen(string dateTime)
     {
         var stubbedSystemTime = Substitute.For<ISystemTime>();
@@ -45,5 +46,18 @@ public class BusinessClockTests
         var clock = new BusinessClock(stubbedSystemTime);
 
         Assert.True(clock.IsOpen());
+    }
+    // TODO Added A Case
+    [Theory]
+    [InlineData("8/21/2023 8:59:59")]
+    [InlineData("8/21/2023 17:00:00")]
+    [InlineData("8/21/2023 23:00:00")]
+    public void WeAreClosed(string dateTime)
+    {
+        var stubbedSystemTime = Substitute.For<ISystemTime>();
+        stubbedSystemTime.GetCurrent().Returns(DateTime.Parse(dateTime));
+        var clock = new BusinessClock(stubbedSystemTime);
+
+        Assert.False(clock.IsOpen());
     }
 }

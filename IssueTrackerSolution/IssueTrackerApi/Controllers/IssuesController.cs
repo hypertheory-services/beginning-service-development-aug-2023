@@ -1,5 +1,6 @@
 ﻿using IssueTrackerApi.Models;
 using Marten;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IssueTrackerApi.Controllers;
@@ -22,6 +23,26 @@ public class IssuesController : ControllerBase
         return Ok("Nice to see you");
     }
 
+    [HttpPost("/closed-issues")]
+   
+    public async Task<ActionResult> CloseTheIssue([FromBody] IssueResponse issue)
+    {
+        using var session = _documentStore.LightweightSession();
+        var savedIssue = await session.Query<IssueResponse>()
+            .Where(i => i.Id == issue.Id && i.Status == IssueStatus.Open)
+            .SingleOrDefaultAsync();
+        if (savedIssue is null)
+        {
+            return BadRequest("We don't have that issue");
+        } else
+        {
+            savedIssue.Status = IssueStatus.Closed;
+            session.Store(savedIssue);
+            await session.SaveChangesAsync();
+            return Accepted();
+
+        }
+    }
 
     [HttpGet("/issues")]
     public async Task<ActionResult> GetIssues([FromQuery] string status = "All")

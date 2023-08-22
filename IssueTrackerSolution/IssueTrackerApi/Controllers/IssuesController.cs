@@ -3,7 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace IssueTrackerApi.Controllers;
 
-[ApiController]
+[ApiController] // validate all [FromBody] parameters, and if they fail, return a 400 with an application/problem.json
 public class IssuesController : ControllerBase
 {
 
@@ -17,8 +17,7 @@ public class IssuesController : ControllerBase
     [HttpPost("/issues")]
     public async Task<ActionResult> AddIssue([FromBody] IssueCreateRequest request)
     {
-
-        
+  
 
         var issue = new IssueResponse
         {

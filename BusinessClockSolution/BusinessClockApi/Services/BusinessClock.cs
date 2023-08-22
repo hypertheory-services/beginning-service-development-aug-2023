@@ -14,7 +14,7 @@ public class BusinessClock
 
     public virtual bool IsOpen()
     {
-        var now = _systemTime.GetCurrent(); 
+        var now = _systemTime.GetCurrent(); // "Impure"
 
         var dayOfWeek = now.DayOfWeek;
 

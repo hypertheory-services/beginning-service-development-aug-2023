@@ -1,0 +1,22 @@
+# For more info on HTTP files go to https://aka.ms/vs/httpfile
+
+### Getting all issues
+
+GET http://localhost:1338/issues
+
+### Get requests by status
+
+GET http://localhost:1338/issues?status=Closed
+
+
+
+### Adding a new Issue
+
+POST http://localhost:1338/issues
+Content-Type: application/json
+
+{
+  "description": "Stuff doesn't work",
+  "application": "The Angular Application",
+  "contactEmail": "jeff@x.z"
+}

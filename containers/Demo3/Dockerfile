@@ -8,7 +8,7 @@ COPY src/hello.c /app/
 ## Added the '-static' here to staticly link the stdio library - dependency free executable.
 RUN gcc -o hello -static hello.c
 ## Another FROM command - this time from Alpine - it's tiny. Like 5 mb. 
-FROM alpine:3.15 as final
+FROM scratch as final
 WORKDIR /app/
 COPY --from=build /app/hello ./
 ENTRYPOINT [ "/app/hello" ]

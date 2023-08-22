@@ -6,9 +6,12 @@ GET http://localhost:1338/issues
 
 ### Get requests by status
 
-GET http://localhost:1338/issues?status=Closed
 
+GET http://localhost:1338/issues?status=Tacos
 
+### Get just a single issue
+
+GET http://localhost:1338/issues/71984ba-f562-4d2f-ae51-ff21cd48f2ff
 
 ### Adding a new Issue
 
@@ -16,7 +19,7 @@ POST http://localhost:1338/issues
 Content-Type: application/json
 
 {
-  "description": "Stuff doesn't work",
+  "description": "Getting Hungry",
   "application": "The Angular Application",
   "contactEmail": "jeff@x.z"
 }

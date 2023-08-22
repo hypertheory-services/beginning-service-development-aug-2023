@@ -1,3 +1,4 @@
+using Marten;
 using System.Text.Json.Serialization;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +15,12 @@ builder.Services.AddControllers().AddJsonOptions(options =>
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 
+var dataConnectionString = builder.Configuration.GetConnectionString("data") ?? throw new Exception("Need A Connection String");
+builder.Services.AddMarten(options =>
+{
+    options.Connection(dataConnectionString);
+    options.AutoCreateSchemaObjects = Weasel.Core.AutoCreate.All; // Classroom-ish
+});
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -27,6 +34,8 @@ app.UseAuthorization();
 
 
 
-app.MapControllers();
+app.MapControllers(); // go find all the controllers, read their attributes [HttpGEt, HttpPost, etc.] 
+// and make a "phone directory"
+// POST /issues
 
 app.Run(); // The api isn't running until we ge here.

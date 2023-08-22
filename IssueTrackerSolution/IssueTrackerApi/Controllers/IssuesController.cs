@@ -1,4 +1,5 @@
 ﻿using IssueTrackerApi.Models;
+using Marten;
 using Microsoft.AspNetCore.Mvc;
 
 namespace IssueTrackerApi.Controllers;
@@ -6,12 +7,64 @@ namespace IssueTrackerApi.Controllers;
 [ApiController] // validate all [FromBody] parameters, and if they fail, return a 400 with an application/problem.json
 public class IssuesController : ControllerBase
 {
+    private readonly IDocumentStore _documentStore;
+
+    public IssuesController(IDocumentStore documentStore)
+    {
+        _documentStore = documentStore;
+    }
+
 
     // GET /greeting
     [HttpGet("/greeting")]
     public async Task<ActionResult> GetTheGreeting()
     {
         return Ok("Nice to see you");
+    }
+
+
+    [HttpGet("/issues")]
+    public async Task<ActionResult> GetIssues([FromQuery] string status = "All")
+    {
+
+        using var session = _documentStore.LightweightSession();
+        IReadOnlyList<IssueResponse>? data = null;
+        if (status == "All")
+        {
+             data = await session.Query<IssueResponse>().ToListAsync();
+        } else
+        {
+            IssueStatus statusEnum;
+            if(Enum.TryParse<IssueStatus>(status, true,  out statusEnum))
+            {
+                data = await session.Query<IssueResponse>().Where(i => i.Status == statusEnum).ToListAsync();
+
+            } else
+            {
+                data = new List<IssueResponse>();
+            }
+
+        }
+
+
+        return Ok(new { issues = data});
+    }
+
+    [HttpGet("/issues/{issueId}")]
+    public async Task<ActionResult> GetIssueById(Guid issueId)
+    {
+        using var session = _documentStore.LightweightSession();
+        var data = await session.Query<IssueResponse>()
+            .Where(i => i.Id == issueId)
+            .SingleOrDefaultAsync();
+
+        if(data is not null)
+        {
+            return Ok(data);
+        } else
+        {
+            return NotFound();
+        }
     }
 
     [HttpPost("/issues")]
@@ -29,7 +82,10 @@ public class IssuesController : ControllerBase
             Status = IssueStatus.Open
         };
 
-        // Save it to a database
+        using var session = _documentStore.LightweightSession();
+        session.Insert(issue);
+        await session.SaveChangesAsync();
+
 
         return Ok(issue);
     }

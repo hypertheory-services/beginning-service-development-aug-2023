@@ -76,9 +76,9 @@ public class StatusTests
             IsOpen = true,
             SupportContact = new SupportContactResponseModel
             {
-                Name = "Mitchell",
+                Name = "Susan",
                 Phone = "800 555-1212",
-                Email = "mitch@company.com"
+                Email = "Susan@company.com"
             }
         };
 

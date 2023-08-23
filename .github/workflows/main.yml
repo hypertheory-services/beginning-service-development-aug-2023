@@ -46,7 +46,7 @@ jobs:
       id: meta
       uses: docker/metadata-action@v4.5.0
       with:
-        images: jeffrygonzalez/business-api-jun-2023
+        images: jeffrygonzalez/business-clock-api-aug-2023
         tags: |
             type=ref,event=pr
             type=semver,pattern={{version}}
@@ -54,8 +54,8 @@ jobs:
     - name: Build and Push Docker Images
       uses: docker/build-push-action@v4.1.0
       with:
-        context: "{{defaultContext}}:./backend/BusinessSolution"
-        file: "BusinessApi/Dockerfile"
+        context: "{{defaultContext}}:./backend/BusinessClockSolution"
+        file: "BusinessClockApi/Dockerfile"
         push: true
         tags: ${{steps.meta.outputs.tags }}
         labels: ${{steps.meta.outputs.labels }}

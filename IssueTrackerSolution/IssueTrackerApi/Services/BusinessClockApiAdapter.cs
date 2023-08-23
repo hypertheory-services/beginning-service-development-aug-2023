@@ -13,7 +13,7 @@ public class BusinessClockApiAdapter
         _httpClient = httpClient;
     }
 
-    public async Task<StatusApiResponseModel?> GetStatusAsync()
+    public async Task<StatusApiResponseModel> GetStatusAsync()
     {
         var response = await _httpClient.GetAsync("/status");
 

@@ -2,7 +2,7 @@
 
 ### Getting all issues
 
-GET http://localhost:1338/issues
+GET http://localhost:1338/issues2
 
 ### Get requests by status
 

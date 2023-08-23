@@ -20,5 +20,10 @@ spec:
           limits:
             memory: "128Mi"
             cpu: "500m"
+        env:
+          - name: TZ
+            value: "America/New_York"
+          - name: ASPNETCORE_ENVIRONMENT
+            value: Development
         ports:
         - containerPort: 80

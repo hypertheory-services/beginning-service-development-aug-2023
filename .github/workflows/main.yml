@@ -24,9 +24,9 @@ jobs:
     - name: Build
       run: dotnet build --no-restore ./BusinessClockSolution
     - name: Unit Test
-      run: dotnet test ./BusinessClockSolution/BusinessClock.UnitTests --no-build --verbosity normal
+      run: dotnet test ./BusinessClockSolution/BusinessClockApi.UnitTests --no-build --verbosity normal
     - name: Integration Test
-      run: dotnet test ./BusinessClockSolution/BusinessClock.ContractTests --no-build --verbosity normal
+      run: dotnet test ./BusinessClockSolution/BusinessClockApi.ContractTests --no-build --verbosity normal
   cd:
     needs: ci
     runs-on: ubuntu-latest

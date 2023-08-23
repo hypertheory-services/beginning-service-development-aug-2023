@@ -13,9 +13,9 @@ public class BusinessClockApiAdapter
         _httpClient = httpClient;
     }
 
-    public async Task<StatusApiResponseModel> GetStatusAsync()
+    public async Task<StatusApiResponseModel> GetStatusAsync(CancellationToken ct)
     {
-        var response = await _httpClient.GetAsync("/status");
+        var response = await _httpClient.GetAsync("/status", ct);
 
         response.EnsureSuccessStatusCode(); // Weird. If this is not a 200-299 response, punch me in the nose.
 

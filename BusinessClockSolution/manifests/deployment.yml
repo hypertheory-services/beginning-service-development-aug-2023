@@ -4,7 +4,7 @@ metadata:
   name: business-clock-api
   namespace: company
 spec:
-  replicas: 1
+  replicas: 3
   selector:
     matchLabels:
       app: business-clock-api
@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
       - name: business-clock-api
-        image: jeffrygonzalez/business-clock-api-aug-2023:sha-47042bc
+        image: jeffrygonzalez/business-clock-api-aug-2023:sha-cf164eb
         resources:
           limits:
             memory: "128Mi"

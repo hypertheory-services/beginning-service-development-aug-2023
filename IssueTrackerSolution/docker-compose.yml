@@ -5,11 +5,13 @@ services:
       POSTGRES_PASSWORD: password
       POSTGRES_USER: user
       POSTGRES_DB: db
+      POSTGRES_HOST_AUTH_METHOD: trust
     ports:
       - 5432:5432
     volumes:
       - ./sql/:/docker-entrypoint-initdb.d/
       - db_data:/var/lib/postgresql/data
+    network_mode: "host"
   business-clock-api:
     image: jeffrygonzalez/clock-api-bsd-aug-2023:latest
     ports:

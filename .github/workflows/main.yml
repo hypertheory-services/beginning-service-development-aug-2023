@@ -54,7 +54,7 @@ jobs:
     - name: Build and Push Docker Images
       uses: docker/build-push-action@v4.1.0
       with:
-        context: "{{defaultContext}}:./backend/BusinessClockSolution"
+        context: "{{defaultContext}}:./BusinessClockSolution"
         file: "BusinessClockApi/Dockerfile"
         push: true
         tags: ${{steps.meta.outputs.tags }}
